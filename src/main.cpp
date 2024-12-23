@@ -1,7 +1,4 @@
 #include <SFML/Graphics.hpp>
-#include <SFML/System/Angle.hpp>
-#include <SFML/System/Time.hpp>
-#include <SFML/System/Vector2.hpp>
 #include <cmath>
 #include <iostream>
 
@@ -27,9 +24,9 @@ public:
     string.rotate(sf::degrees(90.f));
 
     bob.move(sf::Vector2f(windowWidth / 2 - radius, stringLength - radius));
-    }
+  }
 
-    void update(float t,float deltatime){
+    void update(float deltatime){
 
         // angle = std::sin(t * (M_PI / 180)) ;
         angularAcceleration = -1 * (15.f/stringLength) * std::sin(angle  );
@@ -56,7 +53,6 @@ int main()
 {
     sf::Clock time;
     
-    float t = 0;
     auto window = sf::RenderWindow(sf::VideoMode({windowWidth, windowHeight}), "testing");
     window.setFramerateLimit(60);
 
@@ -78,11 +74,10 @@ int main()
                 window.close();
             }
         }
-        t+=1;
         window.clear(sf::Color(28, 28, 28));
-        p1.update(t, deltatime);
+        p1.update(deltatime);
         p1.draw(&window);
-        p2.update(t, deltatime);
+        p2.update(deltatime);
         p2.draw(&window);
         window.display();
     }
