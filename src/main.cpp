@@ -57,7 +57,7 @@ int main()
     sf::Clock time;
 
     
-    auto window = sf::RenderWindow(sf::VideoMode({windowWidth, windowHeight}), "testing");
+    auto window = sf::RenderWindow(sf::VideoMode({windowWidth, windowHeight}), "pendulum simulation");
     window.setFramerateLimit(60);
 
     window.setPosition(sf::Vector2i(400, 400));
