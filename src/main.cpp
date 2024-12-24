@@ -10,14 +10,16 @@ float deltatime = 1.0 / 60;
 class pendulum {
   int stringLength;
   sf::CircleShape bob;
-  sf::RectangleShape string{sf::Vector2f(stringLength, 1)};
+  sf::RectangleShape string;
 
   float angle;
   float angularVelocity;
   float angularAcceleration;
 
 public:
-  pendulum(int radius, int s) : bob(sf::CircleShape(radius)), stringLength(s) {
+  pendulum(int radius, int s)
+      : bob(sf::CircleShape(radius)), stringLength(s),
+        string(sf::RectangleShape{sf::Vector2f(s, 1)}) {
     angle = M_PI / 4;
     bob.setFillColor(sf::Color(0xb8, 0xbb, 0x28));
     string.setFillColor(sf::Color(0xfb, 0x49, 0x34));
@@ -29,15 +31,15 @@ public:
 
     void update(float deltatime){
 
-        // angle = std::sin(t * (M_PI / 180)) ;
         angularAcceleration = -1 * (15.f/stringLength) * std::sin(angle  );
         angularVelocity += angularAcceleration * deltatime;
         angle += angularVelocity;
 
-        std::cout << angularAcceleration << std::endl;
+        // std::cout << angularAcceleration << "," << angularVelocity << "," << angle << std::endl;
         string.setRotation(sf::radians(angle+ M_PI/2));
 
-        sf::Vector2f bp(-1 * std::sin(angle) * stringLength + halfWidth - bob.getRadius(), std::cos( angle ) * stringLength - bob.getRadius());
+        sf::Vector2f bp(-1 * std::sin(angle) * stringLength + halfWidth - bob.getRadius(),
+                        std::cos(angle) * stringLength - bob.getRadius());
 
         bob.setPosition(bp);
 
@@ -53,6 +55,7 @@ public:
 int main()
 {
     sf::Clock time;
+
     
     auto window = sf::RenderWindow(sf::VideoMode({windowWidth, windowHeight}), "testing");
     window.setFramerateLimit(60);
