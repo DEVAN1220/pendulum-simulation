@@ -2,23 +2,22 @@
 #include <cmath>
 #include <iostream>
 
-const int windowWidth = 400;
-const int windowHeight = 400;
-const int halfWidth = windowWidth / 2;
+constexpr int windowWidth = 400;
+constexpr int windowHeight = 400;
+constexpr int halfWidth = windowWidth / 2;
 
-float deltatime = 1.0 / 60;
 class pendulum {
-  int stringLength;
+  float stringLength;
   sf::CircleShape bob;
   sf::RectangleShape string;
 
   float angle;
-  float angularVelocity;
-  float angularAcceleration;
+  float angularVelocity{};
+  float angularAcceleration{};
 
 public:
-  pendulum(int radius, int s)
-      : bob(sf::CircleShape(radius)), stringLength(s),
+  pendulum(const float radius, float s)
+      : stringLength((s)), bob(sf::CircleShape(radius)),
         string(sf::RectangleShape{sf::Vector2f(s, 1)}) {
     angle = M_PI / 4;
     bob.setFillColor(sf::Color(0xb8, 0xbb, 0x28));
@@ -29,16 +28,16 @@ public:
     bob.move(sf::Vector2f(halfWidth - radius, stringLength - radius));
   }
 
-    void update(float deltatime){
+    void update(float deltaTime){
 
         angularAcceleration = -1 * (15.f/stringLength) * std::sin(angle  );
-        angularVelocity += angularAcceleration * deltatime;
+        angularVelocity += angularAcceleration * deltaTime;
         angle += angularVelocity;
 
         // std::cout << angularAcceleration << "," << angularVelocity << "," << angle << std::endl;
-        string.setRotation(sf::radians(angle+ M_PI/2));
+        string.setRotation(sf::radians((angle) + M_PI/2));
 
-        sf::Vector2f bp(-1 * std::sin(angle) * stringLength + halfWidth - bob.getRadius(),
+        const sf::Vector2f bp(-1 * std::sin(angle) * stringLength + halfWidth - bob.getRadius(),
                         std::cos(angle) * stringLength - bob.getRadius());
 
         bob.setPosition(bp);
@@ -55,8 +54,9 @@ public:
 int main()
 {
     sf::Clock time;
+    float deltatime = 1.0 / 60;
 
-    
+
     auto window = sf::RenderWindow(sf::VideoMode({windowWidth, windowHeight}), "pendulum simulation");
     window.setFramerateLimit(60);
 
